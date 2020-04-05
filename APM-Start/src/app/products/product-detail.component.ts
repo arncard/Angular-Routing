@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Product } from './product';
 import { ProductService } from './product.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './product-detail.component.html',
@@ -12,7 +13,10 @@ export class ProductDetailComponent {
   product: Product;
   errorMessage: string;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+    private route: ActivatedRoute) {
+      console.log(this.route.snapshot.paramMap.get('id'));
+     }
 
   getProduct(id: number) {
     this.productService.getProduct(id).subscribe({
