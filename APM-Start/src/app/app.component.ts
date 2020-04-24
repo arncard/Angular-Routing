@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { AuthService } from './user/auth.service';
+import { slideInAnimation } from './app.animation';
+import { MessageService } from './messages/message.service';
 
 @Component({
   selector: 'pm-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [slideInAnimation]
 })
 export class AppComponent {
   pageTitle = 'Acme Product Management';
+  // specify wether or not a route is loading
+  loading = true;
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -21,11 +26,50 @@ export class AppComponent {
     return '';
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
+  get isMessageDisplayed(): boolean
+  {
+    return this.messageService.isDisplayed;
+  }
 
+  constructor(private authService: AuthService, private router: Router,
+    private messageService: MessageService) 
+  {
+    //watch for the router events as soon as the application loads
+    router.events.subscribe((routerEvent: Event) => 
+    {
+      this.checkRouterEvent(routerEvent);
+    });
+  }
+
+  checkRouterEvent(routerEvent: Event)
+  {
+    if(routerEvent instanceof NavigationStart)
+    {
+      this.loading = true;
+    }
+
+    if(routerEvent instanceof NavigationEnd ||
+      routerEvent instanceof NavigationCancel ||
+      routerEvent instanceof NavigationError)
+    {
+      this.loading = false;
+    }
+  }
+  
   logOut(): void {
     this.authService.logout();
     console.log('Log out');
     this.router.navigateByUrl('/welcome');
+  }
+
+  displayMessages()
+  {
+    this.router.navigate([{ outlets: { popup: ['messages']}}]);
+    this.messageService.isDisplayed = true;
+  }
+
+  hideMessages()
+  {    
+    this.messageService.isDisplayed = false;
   }
 }
