@@ -28,7 +28,7 @@
     </li>
     <li class="nav-item" *ngIf="isMessageDisplayed">
       <a class="nav-link"
-        (click)="displayMessages()">Hide Messages</a>
+        (click)="hideMessages()">Hide Messages</a>
     </li>
     <li class="nav-item"
         *ngIf="!isLoggedIn">
@@ -47,7 +47,7 @@
       <router-outlet #o="outlet"></router-outlet>
     </div>
     <div class="col-md-2">
-      <router-outlet ></router-outlet>
+      <router-outlet name="popup"></router-outlet>
     </div>
   </div>   
 </div>

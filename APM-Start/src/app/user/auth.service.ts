@@ -8,8 +8,10 @@ import { MessageService } from '../messages/message.service';
 })
 export class AuthService {
   currentUser: User;
+  redirectUrl: string;
 
   get isLoggedIn(): boolean {
+    // !! coerce the object to a boolean value
     return !!this.currentUser;
   }
 

@@ -70,6 +70,8 @@ export class AppComponent {
 
   hideMessages()
   {    
+    //clear secondary outlet
+    this.router.navigate([{ outlets: { popup: null } }]);
     this.messageService.isDisplayed = false;
   }
 }
