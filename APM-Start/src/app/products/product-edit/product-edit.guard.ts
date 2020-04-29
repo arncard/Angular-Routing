@@ -12,6 +12,11 @@ export class ProductEditGuard implements CanDeactivate<ProductEditComponent> {
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+    if(component.isDirty){
+      const productName = component.product.productName || 'New Product';
+      return confirm(`Navigate away and lose all changes to ${productName}?`);
+    }
     return true;
   }
   
